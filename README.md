@@ -31,6 +31,18 @@ sensor:
           {% if panel is search('Air Temp') %} {{ panel | regex_findall_index('Air Temp +(\d+)') }} {% else %} {{ states('sensor.air_temperature') }} {% endif %}
         device_class: temperature
         unit_of_measurement: "F"
+      salt_level:
+        friendly_name: "Salt Level"
+        value_template: >-
+          {% set panel = states('sensor.pool_panel') %}
+          {% if panel is search('Salt Level') %} {{ panel | regex_findall_index('Salt Level +(\d+)') }} {% else %} {{ states('sensor.salt_level') }} {% endif %}
+        unit_of_measurement: "PPM"
+      pool_chlorinator:
+        friendly_name: "Pool Chlorinator"
+        value_template: >-
+          {% set panel = states('sensor.pool_panel') %}
+          {% if panel is search('Pool Chlorinator') %} {{ panel | regex_findall_index('Pool Chlorinator +(\d+)') }} {% else %} {{ states('sensor.pool_chlorinator') }} {% endif %}
+        unit_of_measurement: "%"        
 switch:
   - platform: template
     switches:
@@ -78,6 +90,18 @@ switch:
           service: "rest_command.pool_panel"
           data:
             KeyId: "13"
+        salt_level:
+        friendly_name: "Salt Level"
+        value_template: >-
+          {% set panel = states('sensor.pool_panel') %}
+          {% if panel is search('Salt Level') %} {{ panel | regex_findall_index('Salt Level +(\d+)') }} {% else %} {{ states('sensor.salt_level') }} {% endif %}
+        unit_of_measurement: "PPM"
+      pool_chlorinator:
+        friendly_name: "Pool Chlorinator"
+        value_template: >-
+          {% set panel = states('sensor.pool_panel') %}
+          {% if panel is search('Pool Chlorinator') %} {{ panel | regex_findall_index('Pool Chlorinator +(\d+)') }} {% else %} {{ states('sensor.pool_chlorinator') }} {% endif %}
+        unit_of_measurement: "%"
 rest_command:
   pool_panel:
     url: http://192.168.3.90/WNewSt.htm
